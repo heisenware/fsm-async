@@ -7,7 +7,14 @@
     "start": "node index.js",
     "test": "./node_modules/.bin/mocha --timeout 5000 test"
   },
-  "author": "Burkhard C. Heisen",
+  "keywords": [
+    "fsm",
+    "state machine",
+    "finite state machine",
+    "async",
+    "await"
+  ],
+  "author": "Burkhard C. Heisen <burkhard.heisen@xsmail.com>",
   "license": "MIT",
   "devDependencies": {
     "mocha": "^3.4.2",
@@ -15,5 +22,9 @@
   },
   "dependencies": {
     "bluebird": "^3.5.0"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/bheisen/fsm-async"
   }
 }
