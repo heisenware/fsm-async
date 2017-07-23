@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "./node_modules/.bin/mocha --timeout 5000 --recursive test"
+    "test": "./node_modules/.bin/mocha --timeout 5000 test"
   },
   "author": "Burkhard C. Heisen",
   "license": "MIT",

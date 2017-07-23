@@ -2,11 +2,11 @@
 
 A state machine implementation featuring:
 
-1.  `on<state>` life-cycle events. Allows triggering of further (inner) events
-    during the callback.
+1.  `on<state>` life-cycle events, allowing the triggering of further (internal)
+     events during the callback.
 
-2.  `async` event functions that can be awaited for. Depending
-    on the implemented logic, a whole chain of state changes can be awaited.
+2.  `async` event functions that can be awaited. Depending
+    on the implemented logic, multiple state changes can be awaited.
 
 3.  A generic and awaitable `waitUtilState(<state>)` function providing
     full flexibility to state machine clients business logic.
@@ -47,7 +47,7 @@ function MyClient () {
 ```
 
 This injects the events as proper callable functions to your instance,
-hence you write:
+hence you can write:
 
 ```javascript
 myClient = MyClient()
@@ -55,7 +55,8 @@ myClient.connect()
 ```
 
 On the object itself you can define life-cycle functions `on<event>` and
-`on<state>`, which will be automatically called and may fire further events:
+`on<state>`, which are automatically called and can be used to trigger
+further events:
 
 ```javascript
 const StateMachine = require('./StateMachine')
@@ -93,12 +94,12 @@ function MyClient () {
 }
 ```
 
-No outer code can `await` the `connect()` of your client and use other utility
-functions injected by the `StateMachine`. The utility functions are:
-1. `getState()` -> returns current state
-2. `waitUntilState(<state>)` -> waits until a given state is reached
-3. `onStateChange(<callback>)` -> notifies about state changes
-4. `onInvalidTransition(<callback>)`-> notifies about invalid transitions
+Now, outer code can `await` the `connect()` of your client and/or use other
+utility functions injected by the `StateMachine`. The utility functions are:
+1. `getState()` returns current state
+2. `waitUntilState(<state>)` waits until a given state is reached
+3. `onStateChange(<callback>)` notifies about state changes
+4. `onInvalidTransition(<callback>)` notifies about invalid transitions
 
 ```javascript
 myClient = MyClient()
