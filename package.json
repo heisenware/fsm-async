@@ -1,6 +1,6 @@
 {
   "name": "fsm-async",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Novel state machine using on<state> hooks and async events",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "bluebird": "^3.5.0"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/bheisen/fsm-async"
+    "type": "git",
+    "url": "https://github.com/bheisen/fsm-async"
   }
 }
