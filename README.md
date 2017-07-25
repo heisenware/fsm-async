@@ -8,7 +8,7 @@ A state machine implementation featuring:
 2.  `async` event functions that can be awaited. Depending
     on the implemented logic, multiple state changes can be awaited.
 
-3.  A generic and awaitable `waitUtilState(<state>)` function providing
+3.  A generic and awaitable `waitUntilState(<state>)` function providing
     full flexibility to state machine clients business logic.
 
 ## Example
