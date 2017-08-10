@@ -1,6 +1,6 @@
 {
   "name": "fsm-async",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Novel state machine using on state hooks and async events",
   "main": "index.js",
   "scripts": {
