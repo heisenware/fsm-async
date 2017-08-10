@@ -31,7 +31,7 @@ const transitionTable = {
 then apply this logic to your object:
 
 ```javascript
-const StateMachine = require('./StateMachine')
+const StateMachine = require('fsm-async')
 
 function MyClient () {
   const transitionTable = {
@@ -60,7 +60,7 @@ On the object itself you can define life-cycle functions `on<event>` and
 further events:
 
 ```javascript
-const StateMachine = require('./StateMachine')
+const StateMachine = require('fsm-async')
 
 function MyClient () {
   const transitionTable = {

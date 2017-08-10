@@ -1,6 +1,2 @@
 'use strict'
-
-const Application = require('./examples/Application')
-
-const application = Application()
-application.run()
+module.exports = require('./lib/StateMachine')

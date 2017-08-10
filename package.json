@@ -1,10 +1,10 @@
 {
   "name": "fsm-async",
   "version": "0.1.2",
-  "description": "Novel state machine using on<state> hooks and async events",
-  "main": "index.js",
+  "description": "Novel state machine using on state hooks and async events",
+  "main": "examples/main.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node examples/main.js",
     "test": "./node_modules/.bin/mocha --timeout 5000 test"
   },
   "keywords": [
