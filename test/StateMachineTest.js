@@ -1,7 +1,6 @@
 'use strict'
 /* global describe, it */
 
-const Promise = require('bluebird')
 const StateMachine = require('../lib/StateMachine')
 
 const chai = require('chai')
@@ -21,12 +20,12 @@ function TestClient () {
 
   async function onConnecting (url) {
     _url = url
-    await Promise.delay(500)
+    await new Promise(resolve => setTimeout(resolve, 500))
     this._connectDone()
   }
 
   async function onDisconnecting () {
-    await Promise.delay(500)
+    await new Promise(resolve => setTimeout(resolve, 500))
     this._disconnectDone()
   }
 

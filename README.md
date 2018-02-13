@@ -76,14 +76,14 @@ function MyClient () {
   // Use async here to be able to await internally
   async function onConnecting () {
     // Simulate connection establishment
-    await Promise.delay(1000)
+    await new Promise(resolve => setTimeout(resolve, 1000))
     // Internally trigger an event bringing the machine to connected state
     this._connectDone()
   }
 
   async function onDisconnecting () {
     // Simulate disconnection
-    await Promise.delay(1000)
+    await new Promise(resolve => setTimeout(resolve, 1000))
     // Internally trigger an event bringing the machine to disconnected state
     this._disconnectDone()
   }
@@ -119,9 +119,3 @@ console.log(myClient.getState()) // disconnected
 ```
 
 Please see the provided example code for more details and usage patterns.
-
-
-
-
-
-
