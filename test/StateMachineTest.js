@@ -13,10 +13,16 @@ function TestClient () {
       {ev: 'connect', from: 'disconnected', to: 'connecting'},
       {ev: '_connectDone', from: 'connecting', to: 'connected'},
       {ev: 'disconnect', from: 'connected', to: 'disconnecting'},
-      {ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected'}
+      {ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected'},
+      {ev: 'goToA', from: '*', to: 'a'},
+      {ev: 'goToB', from: '*', to: 'b'}
     ]
   }
   let _url
+
+  async function init (url) {
+    await this.connect(url)
+  }
 
   async function onConnecting (url) {
     _url = url
@@ -36,7 +42,8 @@ function TestClient () {
   return Object.assign(StateMachine(_transitionTable), {
     onConnecting,
     onDisconnecting,
-    getUrl
+    getUrl,
+    init
   })
 }
 
@@ -65,7 +72,7 @@ describe(__filename, () => {
   describe('An awaited connect event', () => {
     const url = 'test://localhost:8080'
     it('should trigger two stateChanged callbacks', async () => {
-      await client.connect(url)
+      await client.init(url)
       assert.deepEqual(states, ['connecting', 'connected'])
       states = []
     })
@@ -104,6 +111,16 @@ describe(__filename, () => {
         } catch (err) {
           assert.equal(err.message, 'operation timed out')
         }
+      })
+    })
+    describe('A "*" should allow event triggers from any state', () => {
+      it('transit to state a and b should be possible', async () => {
+        client.goToA()
+        await client.waitUntilState('a')
+        assert.equal(client.getState(), 'a')
+        client.goToB()
+        await client.waitUntilState('b')
+        assert.equal(client.getState(), 'b')
       })
     })
   })
