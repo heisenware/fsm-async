@@ -15,7 +15,9 @@ function TestClient () {
       {ev: 'disconnect', from: 'connected', to: 'disconnecting'},
       {ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected'},
       {ev: 'goToA', from: '*', to: 'a'},
-      {ev: 'goToB', from: '*', to: 'b'}
+      {ev: 'goToB', from: '*', to: 'b'},
+      {ev: 'allowedInB', from: 'b', to: 'b'},
+      {ev: 'alsoAllowedInB', from: 'b', to: 'b'}
     ]
   }
   let _url
@@ -119,6 +121,16 @@ describe(__filename, () => {
         await client.waitUntilState('a')
         assert.equal(client.getState(), 'a')
         client.goToB()
+        await client.waitUntilState('b')
+        assert.equal(client.getState(), 'b')
+      })
+    })
+    describe('Multiple events for same from-state should work', () => {
+      it('transit from state b to state b using different events', async () => {
+        client.allowedInB()
+        await client.waitUntilState('b')
+        assert.equal(client.getState(), 'b')
+        client.alsoAllowedInB()
         await client.waitUntilState('b')
         assert.equal(client.getState(), 'b')
       })
