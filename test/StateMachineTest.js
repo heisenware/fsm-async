@@ -1,139 +1,117 @@
 'use strict'
 /* global describe, it */
 
-const StateMachine = require('../lib/StateMachine')
-
 const chai = require('chai')
 const assert = chai.assert
+const TestClass = require('./fixtures/TestClass')
 
-function TestClient () {
-  const _transitionTable = {
-    initial: 'disconnected',
-    transitions: [
-      {ev: 'connect', from: 'disconnected', to: 'connecting'},
-      {ev: '_connectDone', from: 'connecting', to: 'connected'},
-      {ev: 'disconnect', from: 'connected', to: 'disconnecting'},
-      {ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected'},
-      {ev: 'goToA', from: '*', to: 'a'},
-      {ev: 'goToB', from: '*', to: 'b'},
-      {ev: 'allowedInB', from: 'b', to: 'b'},
-      {ev: 'alsoAllowedInB', from: 'b', to: 'b'}
-    ]
-  }
-  let _url
+describe('A TestClass which extends StateMachine', () => {
+  let testClass
+  let invalidTransition = {}
+  let seenStates = []
 
-  async function init (url) {
-    await this.connect(url)
-  }
-
-  async function onConnecting (url) {
-    _url = url
-    await new Promise(resolve => setTimeout(resolve, 500))
-    this._connectDone()
-  }
-
-  async function onDisconnecting () {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    this._disconnectDone()
-  }
-
-  function getUrl () {
-    return _url
-  }
-
-  return Object.assign(StateMachine(_transitionTable), {
-    onConnecting,
-    onDisconnecting,
-    getUrl,
-    init
-  })
-}
-
-describe(__filename, () => {
-  let client = TestClient()
-  let states = []
-  let invalidTransition
-  client.onStateChange((state) => {
-    states.push(state)
-  })
-  client.onInvalidTransition((event, state) => {
-    invalidTransition = [event, state]
+  it('should properly instantiate', () => {
+    testClass = new TestClass()
+    assert.isObject(testClass)
   })
 
-  describe('After instantiation', () => {
-    it('the initial state should be set', () => {
-      assert.equal(client.getState(), 'disconnected')
+  describe('A TestClass instance', () => {
+    it('should allow to register "onStateChange()" callback', () => {
+      testClass.onStateChange(state => seenStates.push(state))
+    })
+    it('should allow to register "onInvalidTransition()" callback', () => {
+      testClass.onInvalidTransition((event, state) => {
+        invalidTransition = { event, state }
+      })
+    })
+    it('should be in the correct initial state', () => {
+      assert.equal(testClass.getState(), 'Alfa')
+    })
+    it('should have all transition-table events as own functions', () => {
+      assert.isFunction(testClass.toBravo)
+      assert.isFunction(testClass._toBravoDone)
+      assert.isFunction(testClass.toAlfa)
+      assert.isFunction(testClass._toAlfaDone)
+      assert.isFunction(testClass.forceToAlfa)
+      assert.isFunction(testClass.forceToCharlie)
+      assert.isFunction(testClass.allowedInCharlie)
+      assert.isFunction(testClass.alsoAllowedInCharlie)
     })
   })
-  describe('Provided transition table events', () => {
-    it('should transform into callable functions', () => {
-      assert.typeOf(client.connect, 'function')
-      assert.typeOf(client.disconnect, 'function')
+
+  describe('Calling the "toBravo()" event', () => {
+    it('should transition the state to Bravo', async () => {
+      await testClass.toBravo('fakePayload')
+      assert.equal(testClass.getState(), 'Bravo')
+    })
+    it('should have forwarded the payload', () => {
+      assert.equal(testClass.bravoParam, 'fakePayload')
+    })
+    it('should have reported about to state changes through the callback', () => {
+      assert.deepEqual(['AlmostBravo', 'Bravo'], seenStates)
+      seenStates = []
     })
   })
-  describe('An awaited connect event', () => {
-    const url = 'test://localhost:8080'
-    it('should trigger two stateChanged callbacks', async () => {
-      await client.init(url)
-      assert.deepEqual(states, ['connecting', 'connected'])
-      states = []
+
+  describe('Calling the "toBravo()" event again', () => {
+    it('should trigger "onInvalidTransition()" but not the "onStateChanged()" callback', async () => {
+      await testClass.toBravo('anotherFakePayload')
+      assert.deepEqual({ event: 'toBravo', state: 'Bravo' }, invalidTransition)
+      assert.deepEqual([], seenStates)
     })
-    it('should have forwarded payload', () => {
-      assert.equal(client.getUrl(), url)
+    it('should leave the current state and the payload unchanged', () => {
+      assert.equal(testClass.getState(), 'Bravo')
+      assert.equal(testClass.bravoParam, 'fakePayload')
     })
-    it('should report proper state', () => {
-      assert.equal(client.getState(), 'connected')
+  })
+
+  describe('A non-awaited valid "toAlpha()" event', () => {
+    it('should trigger the "onStateChange()" callback at first', async () => {
+      testClass.toAlfa().catch(err => { throw err })
+      assert.deepEqual(['AlmostAlfa'], seenStates)
+      assert.equal(testClass.getState(), 'AlmostAlfa')
+      seenStates = []
     })
-    it('should trigger invalidTransition but no stateChanged callback if called again', async () => {
-      await client.connect()
-      assert.deepEqual(['connect', 'connected'], invalidTransition)
-      assert.deepEqual([], states)
+    it('should allow the "toBravo()" event again, once Alpha is reached', async () => {
+      await testClass.waitUntilStateEnters('Alfa')
+      assert.equal(testClass.getState(), 'Alfa')
+      assert.deepEqual(['Alfa'], seenStates)
+      await testClass.toBravo('secondFakePayload')
+      assert.equal(testClass.getState(), 'Bravo')
+      assert.equal(testClass.bravoParam, 'secondFakePayload')
     })
-    describe('A non-awaited disconnect event', () => {
-      it('should trigger one stateChange callback at first', () => {
-        client.disconnect()
-        assert.deepEqual(['disconnecting'], states)
-        assert.equal(client.getState(), 'disconnecting')
-        states = []
-      })
-      it('connect should be possible once disconnected is reached', async () => {
-        await client.waitUntilState('disconnected')
-        assert.equal(client.getState(), 'disconnected')
-        assert.deepEqual(['disconnected'], states)
-        await client.connect()
-        assert.equal(client.getState(), 'connected')
-      })
+  })
+
+  // TODO improve this
+  describe('waitUntilStateEnters', () => {
+    it('should throw exception if timeout is reached', async () => {
+      testClass.toAlfa().catch(err => { throw err })
+      try {
+        await testClass.waitUntilStateEnters('Alfa', 490)
+        assert.isTrue(false)
+      } catch (err) {
+        assert.equal(err.message, 'operation timed out')
+      }
     })
-    describe('waitUntilState', () => {
-      it('should throw exception if timeout is reached', async () => {
-        client.disconnect()
-        try {
-          await client.waitUntilState('disconnected', 490)
-          assert(false)
-        } catch (err) {
-          assert.equal(err.message, 'operation timed out')
-        }
-      })
+  })
+
+  describe('A "*" should allow event triggers from any state', () => {
+    it('the forceTo events should bring us to the target state no matter what', async () => {
+      await testClass.forceToCharlie()
+      assert.equal(testClass.getState(), 'Charlie')
+      await testClass.forceToAlfa()
+      assert.equal(testClass.getState(), 'Alfa')
+      await testClass.forceToCharlie()
+      assert.equal(testClass.getState(), 'Charlie')
     })
-    describe('A "*" should allow event triggers from any state', () => {
-      it('transit to state a and b should be possible', async () => {
-        client.goToA()
-        await client.waitUntilState('a')
-        assert.equal(client.getState(), 'a')
-        client.goToB()
-        await client.waitUntilState('b')
-        assert.equal(client.getState(), 'b')
-      })
-    })
-    describe('Multiple events for same from-state should work', () => {
-      it('transit from state b to state b using different events', async () => {
-        client.allowedInB()
-        await client.waitUntilState('b')
-        assert.equal(client.getState(), 'b')
-        client.alsoAllowedInB()
-        await client.waitUntilState('b')
-        assert.equal(client.getState(), 'b')
-      })
+  })
+
+  describe('Multiple events for same from-state', () => {
+    it('should allow to transit to same target-state but using different events', async () => {
+      await testClass.allowedInCharlie()
+      assert.equal(testClass.getState(), 'Charlie')
+      await testClass.alsoAllowedInCharlie()
+      assert.equal(testClass.getState(), 'Charlie')
     })
   })
 })

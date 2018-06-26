@@ -4,7 +4,7 @@
   "description": "Novel state machine using on state hooks and async events",
   "main": "index.js",
   "scripts": {
-    "start": "node examples/main.js",
+    "example": "node examples/main.js",
     "test": "./node_modules/.bin/mocha --timeout 5000 test"
   },
   "keywords": [
@@ -17,8 +17,8 @@
   "author": "Burkhard C. Heisen <burkhard.heisen@xsmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^3.4.2",
-    "chai": "~4.1.0"
+    "mocha": "^5.2.0",
+    "chai": "~4.1.2"
   },
   "repository": {
     "type": "git",
