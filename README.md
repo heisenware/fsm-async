@@ -23,10 +23,10 @@ Define the transition table as a json object,
 const transitionTable = {
   initial: 'disconnected',
   transitions: [
-    {ev: 'connect', from: 'disconnected', to: 'connecting'},
-    {ev: '_connectDone', from: 'connecting', to: 'connected'},
-    {ev: 'disconnect', from: 'connected', to: 'disconnecting'},
-    {ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected'}
+    { ev: 'connect', from: 'disconnected', to: 'connecting' },
+    { ev: '_connectDone', from: 'connecting', to: 'connected' },
+    { ev: 'disconnect', from: 'connected', to: 'disconnecting' },
+    { ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected' }
   ]
 }
 ```
@@ -42,10 +42,10 @@ class MyClient extends StateMachine {
     const transitionTable = {
       initial: 'disconnected',
       transitions: [
-        {ev: 'connect', from: 'disconnected', to: 'connecting'},
-        {ev: '_connectDone', from: 'connecting', to: 'connected'},
-        {ev: 'disconnect', from: 'connected', to: 'disconnecting'},
-        {ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected'}
+        { ev: 'connect', from: 'disconnected', to: 'connecting' },
+        { ev: '_connectDone', from: 'connecting', to: 'connected' },
+        { ev: 'disconnect', from: 'connected', to: 'disconnecting' },
+        { ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected' }
       ]
     }
     super(transitionTable)
@@ -74,10 +74,10 @@ class MyClient extends StateMachine {
     const transitionTable = {
       initial: 'disconnected',
       transitions: [
-        {ev: 'connect', from: 'disconnected', to: 'connecting'},
-        {ev: '_connectDone', from: 'connecting', to: 'connected'},
-        {ev: 'disconnect', from: 'connected', to: 'disconnecting'},
-        {ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected'}
+        { ev: 'connect', from: 'disconnected', to: 'connecting' },
+        { ev: '_connectDone', from: 'connecting', to: 'connected' },
+        { ev: 'disconnect', from: 'connected', to: 'disconnecting' },
+        { ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected' }
       ]
     }
     super(transitionTable)
@@ -105,8 +105,16 @@ utility functions injected by the `StateMachine`. The utility functions are:
 1. `getState()` returns current state
 2. `waitUntilStateEnters(<state>)` waits until a given state is entered
 3. `waitUntilStateLeaves(<state>)` waits until a given state is left
-3. `onStateChange(<callback(state)>)` notifies about state changes
-4. `onInvalidTransition(<callback(event, state)>)` notifies about invalid transitions
+4. `onStateChange(<callback(state)>)` notifies about state changes
+5. `onInvalidTransition(<callback(event, state)>)` notifies about invalid transitions
+
+The `StateMachine` class at the same time is an event emitter. Hence,
+
+```
+stateMachine.on('state', <callback(state)>)
+stateMachine.on('invalidTransition', <callback(event, state)>)
+```
+is also possible.
 
 Please see the provided example code (`examples` folder) for more details and
 usage patterns.

@@ -8,10 +8,10 @@ class Client extends StateMachine {
     const transitionTable = {
       initial: 'disconnected',
       transitions: [
-        {ev: 'connect', from: 'disconnected', to: 'connecting'},
-        {ev: '_connectDone', from: 'connecting', to: 'connected'},
-        {ev: 'disconnect', from: 'connected', to: 'disconnecting'},
-        {ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected'}
+        { ev: 'connect', from: 'disconnected', to: 'connecting' },
+        { ev: '_connectDone', from: 'connecting', to: 'connected' },
+        { ev: 'disconnect', from: 'connected', to: 'disconnecting' },
+        { ev: '_disconnectDone', from: 'disconnecting', to: 'disconnected' }
       ]
     }
     super(transitionTable)

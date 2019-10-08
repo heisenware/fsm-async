@@ -17,10 +17,10 @@ describe('A TestClass which extends StateMachine', () => {
 
   describe('A TestClass instance', () => {
     it('should allow to register "onStateChange()" callback', () => {
-      testClass.onStateChange(state => seenStates.push(state))
+      testClass.on('state', state => seenStates.push(state))
     })
     it('should allow to register "onInvalidTransition()" callback', () => {
-      testClass.onInvalidTransition((event, state) => {
+      testClass.on('invalidTransition', (event, state) => {
         invalidTransition = { event, state }
       })
     })

@@ -8,11 +8,11 @@ class Application {
     // Create manager instance
     const manager = new Manager()
 
-    manager.onStateChange((state) => {
+    manager.on('state', (state) => {
       console.log(`Application: Manager state updated to ${state}`)
     })
 
-    manager.onInvalidTransition((event, state) => {
+    manager.on('invalidTransition', (event, state) => {
       console.log(`Application: Event ${event} is not valid in state ${state}`)
     })
 

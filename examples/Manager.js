@@ -9,10 +9,10 @@ class Manager extends StateMachine {
     const transitionTable = {
       initial: 'disabled',
       transitions: [
-        {ev: 'enable', from: 'disabled', to: 'enabling'},
-        {ev: '_enableDone', from: 'enabling', to: 'enabled'},
-        {ev: 'disable', from: 'enabled', to: 'disabling'},
-        {ev: '_disableDone', from: 'disabling', to: 'disabled'}
+        { ev: 'enable', from: 'disabled', to: 'enabling' },
+        { ev: '_enableDone', from: 'enabling', to: 'enabled' },
+        { ev: 'disable', from: 'enabled', to: 'disabling' },
+        { ev: '_disableDone', from: 'disabling', to: 'disabled' }
       ]
     }
     super(transitionTable)
