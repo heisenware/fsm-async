@@ -1,11 +1,11 @@
 {
   "name": "fsm-async",
   "version": "2.1.0",
-  "description": "Novel state machine using on state hooks and async events",
+  "description": "Simple asynchronous state machine",
   "main": "index.js",
   "scripts": {
     "example": "node examples/main.js",
-    "test": "./node_modules/.bin/mocha --timeout 5000 test"
+    "test": "./node_modules/.bin/mocha test"
   },
   "keywords": [
     "fsm",
@@ -14,14 +14,14 @@
     "async",
     "await"
   ],
-  "author": "Burkhard C. Heisen <burkhard.heisen@xsmail.com>",
+  "author": "Burkhard C. Heisen <burkhard.heisen@heisenware.com>",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^5.2.0",
-    "chai": "~4.1.2"
+    "mocha": "^8.2.1",
+    "chai": "^4.2.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bheisen/fsm-async"
+    "url": "https://github.com/heisenware/fsm-async"
   }
 }
