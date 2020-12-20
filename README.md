@@ -1,7 +1,9 @@
 # fsm-async
-[![Build Status](https://travis-ci.org/bheisen/fsm-async.svg?branch=master)](https://travis-ci.org/bheisen/fsm-async)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bheisen/fsm-async/master/LICENSE)
-[![Semver](https://img.shields.io/SemVer/2.0.0.png)](https://semver.org/spec/v2.0.0.html)
+[![Build Status](https://travis-ci.com/heisenware/fsm-async.svg?branch=master)](https://travis-ci.com/heisenware/fsm-async)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/heisenware/fsm-async/master/LICENSE)
+[![Semver](https://img.shields.io/badge/semver-2.0.0-blue)](https://semver.org/spec/v2.0.0.html)
+[![GitHub Releases](https://img.shields.io/github/tag/heisenware/fsm-async.svg)](https://github.com/heisenware/fsm-async/tag)
+[![GitHub Issues](https://img.shields.io/github/issues/heisenware/fsm-async.svg)](http://github.com/heisenware/fsm-async/issues)
 
 A state machine implementation featuring:
 

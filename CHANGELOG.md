@@ -1,8 +1,17 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [unreleased]
+
+### Changed
+
+- Updated dependencies
+- Updated badges
+- Improved github integration
 
 ## [2.1.0] - 08 Oct 2019
 
@@ -10,7 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [2.0.0]
 
-## Changed
+### Changed
 
 - Re-implemented StateMachine.js to use `class` feature
 - Adapted all corresponding example code and documentation
@@ -18,7 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improved tests by separating out fixture and by make the cases more general
 - Updated dependencies
 
-## Added
+### Added
 
 - Public API function called `waitUntilStateLeaves`
 - This file
