@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated dependencies
 - Updated badges
 - Improved github integration
+- Forwarding additional event arguments also to state listeners ([cstim](https://github.com/heisenware/fsm-async/commits?author=cstim))
 
 ## [2.1.0] - 08 Oct 2019
 
