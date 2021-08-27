@@ -9,6 +9,7 @@ describe('A TestClass which extends StateMachine', () => {
   let testClass
   let invalidTransition = {}
   let seenStates = []
+  const seenReasonAndStates = new Map()
 
   it('should properly instantiate', () => {
     testClass = new TestClass()
@@ -17,7 +18,10 @@ describe('A TestClass which extends StateMachine', () => {
 
   describe('A TestClass instance', () => {
     it('should allow to register "onStateChange()" callback', () => {
-      testClass.on('state', state => seenStates.push(state))
+      testClass.on('state', (state, reason) => {
+        seenStates.push(state)
+        seenReasonAndStates.set(state, reason)
+      })
     })
     it('should allow to register "onInvalidTransition()" callback', () => {
       testClass.on('invalidTransition', (event, state) => {
@@ -46,6 +50,9 @@ describe('A TestClass which extends StateMachine', () => {
     })
     it('should have forwarded the payload', () => {
       assert.equal(testClass.bravoParam, 'fakePayload')
+      assert.equal(seenReasonAndStates.get('AlmostBravo'), 'fakePayload') // forwarded to the on(state) listener
+      assert(seenReasonAndStates.has('Bravo'))
+      assert.isUndefined(seenReasonAndStates.get('Bravo')) // but not forwarded to here
     })
     it('should have reported about to state changes through the callback', () => {
       assert.deepEqual(['AlmostBravo', 'Bravo'], seenStates)
