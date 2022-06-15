@@ -65,7 +65,9 @@ myClient.connect()
 
 In the body of your class you can define life-cycle functions `on<event>` and
 `on<state>`, which are automatically called and can be used to trigger
-further events:
+further events. Note: the life-cycle functions `on<event>` and `on<state>` will
+be called *before* the 'state' event will be emitted. The life-cycle functions
+can be defined as follows:
 
 ```javascript
 const StateMachine = require('fsm-async')
